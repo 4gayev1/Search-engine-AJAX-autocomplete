@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Live Data Search AJAX</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="container">
+    <h2 class="text-center mt-4 mb-4">Live Data Search using javaScript(AJAX)</h2>
+
+    <div class="row">
+      <div class="col-md-6 m-auto">
+        <h3 class="text-center mb-3">
+        </h3>
+        <div class="form-group">
+          <input type="text" id="search" class="form-control form-control-lg" placeholder="Search name...">
+        </div>
+        <div id="match-list">
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <script>
+    const search = document.getElementById('search');
+    const matchList = document.getElementById('match-list');
+
+
+    const searchName = searchText => {
+
+      var xhttp = new XMLHttpRequest(); //XMLHttpRequest-dən xhttp əşyası yaradırıq
+
+      xhttp.onreadystatechange = function () {
+        // Əgər xhttp.readyState == 4 və xhttp.status == 200 olarsa məlumatların alınması uöurludur
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+
+          var states = JSON.parse(xhttp.response); // Əldə etdiyimiz məlumatları JSON faylına çeviririk 
+
+          let matches = states.filter(state => { //Axtarış prosesini REGEX(REGULAR EXPRESSİONS)-in köməyi ilə edirik
+            const regex = new RegExp(`^${searchText}`, 'gi');
+            return state.name.match(regex);
+          });
+
+
+          if (searchText.length === 0) {
+            matches = [];
+          }
+
+          outputHTML(matches);
+
+        }
+
+      };
+
+      xhttp.open('GET', 'data.json'); //xhttp.open ilə məlumatları alırıq
+      xhttp.send();
+
+    }
+
+    //Bu funksiyanın köməyi ilə nəticəni səhifədə göstərə bilirik
+    const outputHTML = matches => {
+
+      if (matches.length > 0) {
+        html = matches.map(match => `
+         <div class="card card-body mb-1"><h4>${match.name}(${match.location})</h4> </div>`).join('');
+        matchList.innerHTML = html;
+      }
+
+    }
+
+    search.addEventListener('input', () => searchName(search.value));
+  </script>
+
+
+</body>
+
+</html>
