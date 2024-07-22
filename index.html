@@ -36,10 +36,10 @@
 
     const searchName = searchText => {
 
-      var xhttp = new XMLHttpRequest(); //XMLHttpRequest-dən xhttp əşyası yaradırıq
+      var xhttp = new XMLHttpRequest(); //XMLHttpRequest-dən xhttp obyekti yaradırıq
 
       xhttp.onreadystatechange = function () {
-        // Əgər xhttp.readyState == 4 və xhttp.status == 200 olarsa məlumatların alınması uöurludur
+        // Əgər xhttp.readyState == 4 və xhttp.status == 200 olarsa məlumatların alınması uğurludur
         if (xhttp.readyState == 4 && xhttp.status == 200) {
 
           var states = JSON.parse(xhttp.response); // Əldə etdiyimiz məlumatları JSON faylına çeviririk 
